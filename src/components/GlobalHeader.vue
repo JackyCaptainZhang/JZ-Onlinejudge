@@ -1,31 +1,37 @@
 <template>
-  <div id="GlobalHeader">
-    <a-menu
-      mode="horizontal"
-      :selected-keys="selectedkeys"
-      @menu-item-click="doMenuClick"
-    >
-      <a-menu-item
-        key="0"
-        :style="{ padding: 0, marginRight: '38px' }"
-        disabled
+  <a-row id="GlobalHeader" style="margin-bottom: 16px" align="center">
+    <a-col flex="auto">
+      <a-menu
+        mode="horizontal"
+        :selected-keys="selectedkeys"
+        @menu-item-click="doMenuClick"
       >
-        <div class="title-bar">
-          <img class="logo" src="../assets/oj-logo.svg" />
-          <div class="title">Jacky OJ</div>
-        </div>
-      </a-menu-item>
-      <a-menu-item v-for="item in routes" :key="item.path">
-        {{ item.name }}
-      </a-menu-item>
-    </a-menu>
-  </div>
+        <a-menu-item
+          key="0"
+          :style="{ padding: 0, marginRight: '38px' }"
+          disabled
+        >
+          <div class="title-bar">
+            <img class="logo" src="../assets/oj-logo.svg" />
+            <div class="title">Jacky OJ</div>
+          </div>
+        </a-menu-item>
+        <a-menu-item v-for="item in routes" :key="item.path">
+          {{ item.name }}
+        </a-menu-item>
+      </a-menu>
+    </a-col>
+    <a-col flex="100px">
+      <div>{{ store.state.user?.loginUser?.userName ?? "Login" }}</div>
+    </a-col>
+  </a-row>
 </template>
 
 <script setup lang="ts">
 import { routes } from "../router/routes";
 import { useRoute, useRouter } from "vue-router";
 import { ref } from "vue";
+import { useStore } from "vuex";
 
 const router = useRouter();
 
@@ -40,6 +46,9 @@ router.afterEach((click) => {
 const doMenuClick = (key: string) => {
   router.push({ path: key });
 };
+
+const store = useStore();
+//console.log(store.state.user.loginUser);
 </script>
 
 <style scoped>
