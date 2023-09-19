@@ -6,6 +6,7 @@ export default {
   state: () => ({
     loginUser: {
       userName: "Login",
+      role: "NotAdmin",
     },
   }),
   //todo use store.dispatch to call this action in any other functions
