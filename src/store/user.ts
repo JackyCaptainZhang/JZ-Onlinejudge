@@ -6,6 +6,7 @@ export default {
   state: () => ({
     loginUser: {
       userName: "Login",
+      //Change this parameter to give user permission
       role: "NotAdmin",
     },
   }),

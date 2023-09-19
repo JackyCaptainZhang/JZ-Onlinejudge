@@ -19,6 +19,7 @@ export const routes: Array<RouteRecordRaw> = [
     name: "Admin View",
     component: AdminView,
     meta: {
+      //Add this attribute to the page that needed the permission control
       access: "canAdmin",
     },
   },
