@@ -2,6 +2,7 @@ import { RouteRecordRaw } from "vue-router";
 import HomeView from "../views/HomeView.vue";
 import AdminView from "@/views/AdminView.vue";
 import NoAuthView from "@/views/NoAuthView.vue";
+import accessEnum from "@/access/accessEnum";
 
 export const routes: Array<RouteRecordRaw> = [
   {
@@ -13,6 +14,10 @@ export const routes: Array<RouteRecordRaw> = [
     path: "/noAuth",
     name: "No Auth",
     component: NoAuthView,
+    meta: {
+      //Add this attribute to the page that needed the permission control
+      access: accessEnum.NOT_LOGIN,
+    },
   },
   {
     path: "/admin",
@@ -20,7 +25,7 @@ export const routes: Array<RouteRecordRaw> = [
     component: AdminView,
     meta: {
       //Add this attribute to the page that needed the permission control
-      access: "canAdmin",
+      access: accessEnum.ADMIN,
     },
   },
   {
@@ -31,5 +36,9 @@ export const routes: Array<RouteRecordRaw> = [
     // which is lazy-loaded when the route is visited.
     component: () =>
       import(/* webpackChunkName: "about" */ "../views/AboutView.vue"),
+    meta: {
+      //Add this attribute to the page that needed the permission control
+      access: accessEnum.USER,
+    },
   },
 ];

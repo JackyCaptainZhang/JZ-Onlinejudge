@@ -1,5 +1,6 @@
 import store from "@/store/index";
 import { StoreOptions } from "vuex";
+import accessEnum from "@/access/accessEnum";
 
 export default {
   namespaced: true,
@@ -7,14 +8,14 @@ export default {
     loginUser: {
       userName: "Login",
       //Change this parameter to give user permission
-      role: "NotAdmin",
+      userRole: accessEnum.NOT_LOGIN,
     },
   }),
   //todo use store.dispatch to call this action in any other functions
   actions: {
     getLoginUser({ commit, state }, payload) {
       //todo change it to the online SQL data fetch
-      commit("updateUser", { userName: "Jacky Captain" });
+      commit("updateUser", payload);
     },
   },
   mutations: {

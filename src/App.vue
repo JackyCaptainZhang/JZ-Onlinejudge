@@ -13,15 +13,16 @@
 import BasicLayout from "./layouts/BasicLayout";
 import { useRouter } from "vue-router";
 import { useStore } from "vuex";
+import accessEnum from "@/access/accessEnum";
 
 const router = useRouter();
 const store = useStore();
 
-//Check if user clicks on the page that needed the permission control
+//Check if user clicks on the page that needed the permission control (Can be deleted, in case any invalid click)
 router.beforeEach((to, from, next) => {
-  if (to.meta?.access === "canAdmin") {
+  if (to.meta?.access === accessEnum.ADMIN) {
     //Check the user admin status
-    if (store.state.user.loginUser?.role !== "Admin") {
+    if (store.state.user.loginUser?.userRole !== accessEnum.ADMIN) {
       //Jump to NoAuth View if user is not admin
       next("/noAuth");
       return;

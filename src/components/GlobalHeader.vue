@@ -1,5 +1,6 @@
 <template>
-  <a-row id="GlobalHeader" style="margin-bottom: 16px" align="center">
+  <a-row id="GlobalHeader" align="center" :wrap="false"
+    ><!--Prevent login bottom warp when in small window-->
     <a-col flex="auto">
       <a-menu
         mode="horizontal"
@@ -16,7 +17,8 @@
             <div class="title">Jacky OJ</div>
           </div>
         </a-menu-item>
-        <a-menu-item v-for="item in routes" :key="item.path">
+        <a-menu-item v-for="item in visiableRoutes" :key="item.path"
+          ><!--Enable denamic headers menu from the filtered router file, which is filtered according to users' role-->
           {{ item.name }}
         </a-menu-item>
       </a-menu>
@@ -30,10 +32,25 @@
 <script setup lang="ts">
 import { routes } from "../router/routes";
 import { useRoute, useRouter } from "vue-router";
-import { ref } from "vue";
+import { computed, ref } from "vue";
 import { useStore } from "vuex";
+import accessEnum from "@/access/accessEnum";
+import checkAccess from "@/access/checkAccess";
 
 const router = useRouter();
+const store = useStore();
+
+// Filter out the pages that should be displayed according to the userprofile
+const visiableRoutes = computed(() => {
+  return routes.filter((item, index) => {
+    if (
+      !checkAccess(store.state.user.loginUser, item?.meta?.access as string)
+    ) {
+      return false;
+    }
+    return true;
+  });
+});
 
 //Default "Home" page
 const selectedkeys = ref(["/"]);
@@ -47,8 +64,13 @@ const doMenuClick = (key: string) => {
   router.push({ path: key });
 };
 
-const store = useStore();
-//console.log(store.state.user.loginUser);
+// For test use (automatically login as admin after 5 seconds)
+setTimeout(() => {
+  store.dispatch("user/getLoginUser", {
+    userName: "Jacky Admin",
+    userRole: accessEnum.ADMIN,
+  });
+}, 5000);
 </script>
 
 <style scoped>
